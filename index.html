@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎬 CineMagic | Book Your Movie</title>
+  <!-- Google Fonts & Font Awesome for icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #0b0f1c 0%, #1a1f2e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    /* Main card */
+    .booking-container {
+      max-width: 1200px;
+      width: 100%;
+      background: rgba(22, 28, 45, 0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 2.5rem;
+      padding: 2rem 2rem 2.5rem;
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 215, 0, 0.15);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo i {
+      font-size: 2.5rem;
+      color: #ffd966;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    .logo h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      background: linear-gradient(to right, #ffd966, #ffb347);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .date-badge {
+      background: rgba(255, 215, 0, 0.12);
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      padding: 0.6rem 1.3rem;
+      border-radius: 40px;
+      color: #ffd966;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(5px);
+      font-size: 0.95rem;
+    }
+
+    /* Movie selection row */
+    .movie-showtime {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      background: rgba(12, 17, 28, 0.7);
+      padding: 1.5rem 1.8rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(255, 215, 0, 0.1);
+      align-items: center;
+    }
+
+    .movie-poster {
+      flex-shrink: 0;
+      width: 80px;
+      height: 110px;
+      background: linear-gradient(135deg, #2a3240, #141a24);
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffd96666;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .movie-poster i {
+      font-size: 2.8rem;
+      color: #ffd966;
+      filter: drop-shadow(0 0 6px #ffb347);
+    }
+
+    .movie-info {
+      flex: 2;
+      min-width: 180px;
+    }
+
+    .movie-info h2 {
+      color: #fff;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.5px;
+    }
+
+    .movie-info .meta {
+      color: #b0b8c5;
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .meta i {
+      color: #ffd966;
+      margin-right: 5px;
+    }
+
+    .showtime-selector {
+      flex: 1.5;
+      min-width: 200px;
+    }
+
+    .showtime-selector label {
+      display: block;
+      color: #ffd966;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .showtime-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .time-btn {
+      background: transparent;
+      border: 1.5px solid #3e4a5e;
+      color: #cdd6e4;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+
+    .time-btn i {
+      margin-right: 6px;
+      font-size: 0.8rem;
+    }
+
+    .time-btn.active {
+      background: #ffd966;
+      border-color: #ffd966;
+      color: #0b0f1c;
+      box-shadow: 0 0 18px #ffd966aa;
+      font-weight: 600;
+    }
+
+    .time-btn:hover {
+      border-color: #ffd966;
+      color: #ffd966;
+    }
+
+    /* Screen representation */
+    .screen-section {
+      text-align: center;
+      margin: 1rem 0 1.5rem;
+    }
+
+    .screen {
+      height: 12px;
+      background: linear-gradient(to right, #4a5568, #a0aec0, #4a5568);
+      width: 75%;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 25px #ffd96688, 0 0 10px #ffffff44;
+      border: 1px solid #ffd966;
+    }
+
+    .screen-label {
+      color: #9aa6b8;
+      font-size: 0.85rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    /* Seat map */
+    .seat-map {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2rem 0 1.5rem;
+    }
+
+    .seat-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .seat {
+      width: 45px;
+      height: 45px;
+      background: #1e2636;
+      border-radius: 12px 12px 8px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #8a94a6;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.15s ease;
+      border: 1px solid #3a4357;
+      box-shadow: 0 5px 0 #0d121c;
+      position: relative;
+    }
+
+    .seat i {
+      font-size: 1.1rem;
+      opacity: 0.5;
+    }
+
+    .seat.selected {
+      background: #ffd966;
+      border-color: #ffb347;
+      color: #0b0f1c;
+      box-shadow: 0 0 15px #ffd966cc, 0 5px 0 #b87c1e;
+      transform: translateY(-2px);
+    }
+
+    .seat.selected i {
+      opacity: 1;
+      color: #1e1e2a;
+    }
+
+    .seat.occupied {
+      background: #2d3748;
+      border-color: #4a5568;
+      color: #5a6579;
+      cursor: not-allowed;
+      box-shadow: 0 3px 0 #1a1f2c;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .seat.occupied i {
+      opacity: 0.3;
+    }
+
+    .seat:not(.occupied):hover {
+      background: #3c4a60;
+      border-color: #ffd966aa;
+      color: #ffd966;
+    }
+
+    /* Seat legend */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1.5rem 0 1rem;
+      flex-wrap: wrap;
+      color: #a8b2c2;
+      font-size: 0.9rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .legend-box {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #1e2636;
+      border: 1px solid #3a4357;
+      box-shadow: 0 4px 0 #0d121c;
+    }
+
+    .legend-box.selected {
+      background: #ffd966;
+      border-color: #ffb347;
+      box-shadow: 0 0 12px #ffd966aa, 0 4px 0 #b87c1e;
+    }
+
+    .legend-box.occupied {
+      background: #2d3748;
+      border-color: #4a5568;
+      box-shadow: 0 2px 0 #1a1f2c;
+      opacity: 0.7;
+    }
+
+    /* Summary & checkout */
+    .booking-summary {
+      background: rgba(12, 17, 28, 0.7);
+      border-radius: 2rem;
+      padding: 1.8rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 1.8rem;
+      border: 1px solid #ffd96633;
+      backdrop-filter: blur(8px);
+    }
+
+    .summary-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.2rem;
+    }
+
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .summary-item .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #9aa6b8;
+    }
+
+    .summary-item .value {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .summary-item .value span {
+      color: #ffd966;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-left: 4px;
+    }
+
+    .total-price {
+      font-size: 2rem !important;
+      color: #ffd966 !important;
+    }
+
+    .checkout-btn {
+      background: linear-gradient(135deg, #ffd966, #ffb347);
+      border: none;
+      border-radius: 60px;
+      padding: 1rem 2.8rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0b0f1c;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 12px 25px -8px #ffb347cc, 0 0 0 1px #ffd96688;
+      transition: 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .checkout-btn i {
+      font-size: 1.3rem;
+    }
+
+    .checkout-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 18px 30px -8px #ffb347, 0 0 0 2px #ffd966cc;
+      filter: brightness(1.05);
+    }
+
+    .checkout-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Notification */
+    .toast-message {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1e2636;
+      color: #ffd966;
+      padding: 1rem 2.5rem;
+      border-radius: 60px;
+      border-left: 6px solid #ffd966;
+      box-shadow: 0 20px 40px #00000080;
+      font-weight: 500;
+      opacity: 0;
+      transition: 0.3s;
+      pointer-events: none;
+      z-index: 999;
+      backdrop-filter: blur(12px);
+      font-size: 1rem;
+    }
+
+    .toast-message.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .booking-container {
+        padding: 1.5rem;
+      }
+      .movie-showtime {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .movie-poster {
+        width: 70px;
+        height: 95px;
+      }
+      .seat {
+        width: 35px;
+        height: 35px;
+        font-size: 0.7rem;
+      }
+      .seat-row {
+        gap: 0.4rem;
+      }
+      .summary-details {
+        gap: 1rem;
+      }
+      .checkout-btn {
+        padding: 0.9rem 1.8rem;
+        font-size: 1rem;
+      }
+      .total-price {
+        font-size: 1.6rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-container">
+    <!-- header -->
+    <div class="header">
+      <div class="logo">
+        <i class="fas fa-film"></i>
+        <h1>CineMagic</h1>
+      </div>
+      <div class="date-badge">
+        <i class="fas fa-calendar-alt"></i> Today, 12 Oct 2025
+      </div>
+    </div>
+
+    <!-- movie & showtime selection -->
+    <div class="movie-showtime">
+      <div class="movie-poster">
+        <i class="fas fa-mask"></i>
+      </div>
+      <div class="movie-info">
+        <h2>Dune: Part Three</h2>
+        <div class="meta">
+          <span><i class="fas fa-clock"></i> 2h 48m</span>
+          <span><i class="fas fa-star"></i> 8.9/10</span>
+          <span><i class="fas fa-tag"></i> Sci-Fi / Adventure</span>
+        </div>
+      </div>
+      <div class="showtime-selector">
+        <label><i class="fas fa-clock"></i> Select Showtime</label>
+        <div class="showtime-buttons">
+          <button class="time-btn" data-time="10:30 AM"><i class="fas fa-sun"></i> 10:30 AM</button>
+          <button class="time-btn active" data-time="2:15 PM"><i class="fas fa-cloud-sun"></i> 2:15 PM</button>
+          <button class="time-btn" data-time="6:45 PM"><i class="fas fa-moon"></i> 6:45 PM</button>
+          <button class="time-btn" data-time="9:30 PM"><i class="fas fa-star"></i> 9:30 PM</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- screen representation -->
+    <div class="screen-section">
+      <div class="screen"></div>
+      <div class="screen-label">SCREEN</div>
+    </div>
+
+    <!-- seat map (rows A to F) -->
+    <div class="seat-map" id="seatMap">
+      <!-- rows generated by js, but we'll hardcode for reliability -->
+    </div>
+
+    <!-- seat legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-box"></div>
+        <span>Available</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-box selected"></div>
+        <span>Selected</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-box occupied"></div>
+        <span>Occupied</span>
+      </div>
+    </div>
+
+    <!-- booking summary -->
+    <div class="booking-summary">
+      <div class="summary-details">
+        <div class="summary-item">
+          <span class="label">Seats</span>
+          <div class="value" id="selectedSeatsDisplay">—</div>
+        </div>
+        <div class="summary-item">
+          <span class="label">Tickets</span>
+          <div class="value" id="ticketCount">0</div>
+        </div>
+        <div class="summary-item">
+          <span class="label">Total</span>
+          <div class="value total-price" id="totalPrice">$0</div>
+        </div>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn">
+        <i class="fas fa-ticket-alt"></i> Book Now
+      </button>
+    </div>
+  </div>
+
+  <!-- toast message -->
+  <div id="toast" class="toast-message">🎟️ Seats booked successfully! Enjoy the movie.</div>
+
+  <script>
+    (function() {
+      // ----- configuration -----
+      const ROWS = 6;               // A to F
+      const SEATS_PER_ROW = 8;
+      const TICKET_PRICE = 14.50;
+      
+      // occupied seats (pre-defined) — realistic pattern
+      const OCCUPIED_SEATS = [
+        'A3', 'A4', 'A5', 'A6',
+        'B1', 'B2', 'B8',
+        'C4', 'C5', 'C6', 'C7',
+        'D2', 'D3', 'D6', 'D7',
+        'E1', 'E5', 'E6', 'E7', 'E8',
+        'F4', 'F5'
+      ];
+
+      // state
+      let selectedSeats = new Set();   // ex: 'A1', 'B4'
+      let currentShowtime = '2:15 PM';
+
+      // DOM elements
+      const seatMapEl = document.getElementById('seatMap');
+      const selectedSeatsDisplay = document.getElementById('selectedSeatsDisplay');
+      const ticketCountEl = document.getElementById('ticketCount');
+      const totalPriceEl = document.getElementById('totalPrice');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      const toastEl = document.getElementById('toast');
+      const timeBtns = document.querySelectorAll('.time-btn');
+
+      // Helper: generate row letter from index (0 -> A)
+      const rowLetter = (index) => String.fromCharCode(65 + index);
+
+      // ----- build seat map -----
+      function buildSeatMap() {
+        seatMapEl.innerHTML = '';
+        for (let r = 0; r < ROWS; r++) {
+          const rowDiv = document.createElement('div');
+          rowDiv.className = 'seat-row';
+          const rowLetterChar = rowLetter(r);
+          
+          for (let s = 1; s <= SEATS_PER_ROW; s++) {
+            const seatId = `${rowLetterChar}${s}`;
+            const seat = document.createElement('div');
+            seat.className = 'seat';
+            seat.dataset.seatId = seatId;
+            
+            // seat content (icon + number)
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-chair';
+            seat.appendChild(icon);
+            
+            // mark occupied if in list
+            if (OCCUPIED_SEATS.includes(seatId)) {
+              seat.classList.add('occupied');
+              seat.dataset.occupied = 'true';
+            } else {
+              // if it was previously selected (maybe after re-render) we keep selected
+              if (selectedSeats.has(seatId)) {
+                seat.classList.add('selected');
+              }
+            }
+            
+            // click handler for available seats
+            seat.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (seat.classList.contains('occupied')) return;
+              
+              const id = seat.dataset.seatId;
+              if (selectedSeats.has(id)) {
+                selectedSeats.delete(id);
+                seat.classList.remove('selected');
+              } else {
+                selectedSeats.add(id);
+                seat.classList.add('selected');
+              }
+              updateSummary();
+            });
+            
+            rowDiv.appendChild(seat);
+          }
+          seatMapEl.appendChild(rowDiv);
+        }
+      }
+
+      // ----- update summary panel -----
+      function updateSummary() {
+        const seatArray = Array.from(selectedSeats);
+        const count = seatArray.length;
+        
+        // sort seats alphabetically (A1, A2, B1...)
+        seatArray.sort((a, b) => {
+          const rowA = a[0];
+          const rowB = b[0];
+          if (rowA !== rowB) return rowA.localeCompare(rowB);
+          const numA = parseInt(a.slice(1), 10);
+          const numB = parseInt(b.slice(1), 10);
+          return numA - numB;
+        });
+        
+        // display seats (shorten if too many)
+        if (count === 0) {
+          selectedSeatsDisplay.textContent = '—';
+        } else if (count <= 6) {
+          selectedSeatsDisplay.textContent = seatArray.join(', ');
+        } else {
+          selectedSeatsDisplay.textContent = seatArray.slice(0, 4).join(', ') + ` +${count - 4} more`;
+        }
+        
+        ticketCountEl.textContent = count;
+        const total = (count * TICKET_PRICE).toFixed(2);
+        totalPriceEl.textContent = `$${total}`;
+      }
+
+      // ----- toast notification -----
+      function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add('show');
+        setTimeout(() => {
+          toastEl.classList.remove('show');
+        }, 2800);
+      }
+
+      // ----- reset selection (used after booking) -----
+      function clearSelectedSeats() {
+        selectedSeats.clear();
+        // remove selected class from all seats
+        document.querySelectorAll('.seat.selected').forEach(seat => {
+          seat.classList.remove('selected');
+        });
+        updateSummary();
+      }
+
+      // ----- checkout action -----
+      function handleCheckout() {
+        const seatCount = selectedSeats.size;
+        if (seatCount === 0) {
+          showToast('⚠️ Please select at least one seat.');
+          return;
+        }
+        
+        // Build a nice message
+        const seatsList = Array.from(selectedSeats).sort((a,b) => {
+          if (a[0] !== b[0]) return a[0].localeCompare(b[0]);
+          return parseInt(a.slice(1)) - parseInt(b.slice(1));
+        }).join(', ');
+        
+        showToast(`✅ Booked ${seatCount} seat${seatCount > 1 ? 's' : ''} (${seatsList}) for ${currentShowtime}`);
+        
+        // clear selection after successful booking
+        clearSelectedSeats();
+      }
+
+      // ----- showtime switching -----
+      function initShowtimeButtons() {
+        timeBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            // remove active from all
+            timeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentShowtime = btn.dataset.time || btn.innerText.trim();
+            
+            // optional: clear selected seats when changing showtime? 
+            // we keep them to be user-friendly, but we could clear.
+            // I'll keep them so user can switch without losing selection.
+            // But it's more realistic to keep. (no clear)
+          });
+        });
+      }
+
+      // ----- manual selection clearing if needed (not used but good)-----
+      // initialize
+      function init() {
+        // ensure currentShowtime from active button
+        const activeBtn = document.querySelector('.time-btn.active');
+        if (activeBtn) currentShowtime = activeBtn.dataset.time || activeBtn.innerText.trim();
+        
+        buildSeatMap();
+        updateSummary();
+        initShowtimeButtons();
+        
+        // checkout event
+        checkoutBtn.addEventListener('click', handleCheckout);
+        
+        // Add a few clickable seats already pre-selected for demo? no, let user pick.
+        // But to show it works, let's pre-select two seats? optional, but not needed.
+        // Better to keep clean.
+        
+        // Add event to any seat dynamically? already attached in build.
+        // But if we re-render, we need re-attach. We built once.
+      }
+
+      // Run
+      init();
+    })();
+  </script>
+</body>
+</html>
